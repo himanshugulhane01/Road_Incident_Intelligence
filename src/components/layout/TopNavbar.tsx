@@ -3,6 +3,7 @@ import {
   ShieldAlert,
   Search,
   Bell,
+  User,
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
@@ -38,101 +39,108 @@ export const TopNavbar: React.FC = () => {
   return (
     <header
       id="roadguard-top-navbar"
-      className="h-20 shrink-0 px-6 md:px-8 flex items-center justify-between select-none z-30 bg-[#E5E3DC]/90 backdrop-blur-md border-b border-[#CFCDC4] shadow-xs"
+      className="h-20 shrink-0 px-6 md:px-8 flex items-center justify-between select-none z-30 bg-[#FFFFFF] border-b border-[#CBD5E1] shadow-xs"
     >
-      {/* 1. Left: Website Brand Name */}
+      {/* 1. Left: Brand Logo & Title */}
       <div
         className="flex items-center gap-3.5"
         id="brand-logo-button"
       >
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm shrink-0 bg-[#161616] text-[#FF5722]"
+          className="w-10 h-10 rounded-xl flex items-center justify-center shadow-xs shrink-0 bg-[#0F172A] text-[#EA580C]"
         >
-          <ShieldAlert className="w-5 h-5" />
+          <ShieldAlert className="w-5 h-5 text-[#EA580C]" />
         </div>
         <div className="flex flex-col justify-center">
           <div className="flex items-center gap-2 leading-none">
-            <span
-              className="font-display tracking-wider text-2xl text-[#141414]"
-            >
-              ROADGUARD <span className="text-[#161616] bg-[#FF5722] text-white px-1.5 py-0.5 rounded-sm">AI</span>
+            <span className="font-display tracking-tight text-xl font-bold text-[#0F172A]">
+              ROADGUARD <span className="text-white bg-[#EA580C] px-1.5 py-0.5 rounded text-base font-bold ml-0.5">AI</span>
             </span>
-            <span
-              className="text-[9px] px-2 py-0.5 rounded bg-[#161616] text-[#FF5722] font-mono-tech border border-[#FF5722]/30"
-            >
-              v2.6
+            <span className="text-[10px] px-2 py-0.5 rounded bg-[#F1F5F9] text-[#EA580C] font-mono-tech border border-[#CBD5E1] font-bold">
+              v2.6 PLATFORM
             </span>
           </div>
-          <p className="text-[11px] font-mono-tech text-[#55534E] mt-0.5 hidden sm:block tracking-wider">
+          <p className="text-[11px] font-semibold text-[#475569] mt-0.5 hidden sm:block tracking-wide">
             URBAN TRAFFIC INTELLIGENCE
           </p>
         </div>
       </div>
 
-      {/* 2. Center: Prominently Aligned Search Bar */}
-      <div className="flex-1 max-w-md mx-6 hidden md:block">
+      {/* 2. Center: Centered Global Search Bar */}
+      <div className="flex-1 max-w-lg mx-8 hidden md:block">
         <button
           id="global-search-trigger"
           onClick={() => setIsSearchOpen(true)}
-          className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-[#DFDDD5] border border-[#CFCDC4] text-[#55534E] text-xs font-mono-tech hover:border-[#161616] hover:bg-white transition-all cursor-pointer"
+          className="w-full flex items-center justify-between px-4 py-2 rounded-xl bg-[#F8FAFC] border border-[#CBD5E1] text-[#334155] text-xs font-semibold hover:border-[#0F172A] hover:bg-white transition-all cursor-pointer shadow-xs"
           title="Search forensic records (Ctrl+K)"
         >
           <div className="flex items-center gap-2.5">
-            <Search className="w-4 h-4 text-[#161616]" />
-            <span>▸ SEARCH FORENSICS, PLATES, VEHICLES...</span>
+            <Search className="w-4 h-4 text-[#0F172A]" />
+            <span className="text-xs font-medium text-[#475569]">▸ SEARCH FORENSICS, PLATES, VEHICLES...</span>
           </div>
-          <kbd className="px-2 py-0.5 rounded bg-[#161616] text-[10px] font-mono-tech text-[#FF5722] border border-[#FF5722]/30">
+          <kbd className="px-2 py-0.5 rounded bg-[#0F172A] text-[10px] font-mono-tech text-[#EA580C] font-bold border border-[#EA580C]/40">
             ⌘K
           </kbd>
         </button>
       </div>
 
-      {/* 3. Right: Operator Profile & Alerts */}
+      {/* 3. Right: Live Clock, Alerts & Profile */}
       <div className="flex items-center gap-3 shrink-0">
-        {/* Mobile Search Button */}
+        {/* Mobile Search Trigger */}
         <button
           onClick={() => setIsSearchOpen(true)}
-          className="md:hidden p-2.5 rounded-xl bg-[#DFDDD5] border border-[#CFCDC4] text-[#141414]"
+          className="md:hidden p-2.5 rounded-xl bg-[#F8FAFC] border border-[#CBD5E1] text-[#0F172A]"
         >
           <Search className="w-4 h-4" />
         </button>
 
-        {/* Live Timestamp (Desktop) */}
-        <div className="hidden lg:block px-3.5 py-2 rounded-xl bg-[#DFDDD5] border border-[#CFCDC4] text-xs font-mono-tech text-[#141414]">
-          {currentTimeStr}
+        {/* Live Clock (Desktop) */}
+        <div className="hidden lg:flex items-center px-3.5 py-2 rounded-xl bg-[#F8FAFC] border border-[#CBD5E1] text-xs font-mono-tech font-bold text-[#0F172A] gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+          <span>{currentTimeStr}</span>
         </div>
 
-        {/* Alert Notification Bell */}
+        {/* Quick Alerts Bell */}
         <button
           id="quick-alerts-button"
           onClick={() => setCurrentRoute('alerts')}
-          className="relative px-3 py-2 rounded-xl bg-[#161616] text-[#FFFFFF] hover:text-[#FF5722] border border-[#000000] text-xs font-mono-tech flex items-center gap-2 transition-all cursor-pointer"
+          className="relative px-3.5 py-2 rounded-xl bg-[#0F172A] text-[#FFFFFF] hover:bg-[#020617] border border-[#020617] text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-xs"
           title="Alerts Feed"
         >
-          <Bell className="w-4 h-4 text-[#FF5722]" />
-          <span className="hidden sm:inline">▸ ALERTS</span>
+          <Bell className="w-4 h-4 text-[#EA580C]" />
+          <span className="hidden sm:inline font-bold">ALERTS</span>
           {unreadAlertCount > 0 && (
-            <span className="w-4 h-4 rounded bg-[#FF4D4D] text-white text-[9px] font-mono-tech font-bold flex items-center justify-center">
+            <span className="w-4 h-4 rounded-full bg-[#DC2626] text-white text-[10px] font-bold flex items-center justify-center">
               {unreadAlertCount}
             </span>
           )}
         </button>
 
-        {/* Operator Profile */}
+        {/* Operator Profile Badge */}
         <div
           id="operator-profile-badge"
           onClick={() => setCurrentRoute('settings')}
-          className="flex items-center gap-3 pl-3 border-l border-[#CFCDC4] cursor-pointer group"
-          title="Operator Settings"
+          className="flex items-center gap-3 pl-3.5 border-l border-[#CBD5E1] cursor-pointer group"
+          title="Operator Settings & Profile"
         >
-          <div className="w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold bg-[#161616] text-[#FF5722] font-mono-tech border border-[#FF5722]/40 shadow-sm group-hover:scale-105 transition-all">
-            {user ? user.name.slice(0, 2).toUpperCase() : 'OP'}
-          </div>
-          <div className="hidden sm:block text-left">
-            <div className="text-xs font-bold text-[#141414] group-hover:text-[#FF5722] transition-colors font-mono-tech">
-              {user ? user.name : 'Cmdr. Alex Vance'}
+          <div className="relative">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#0F172A] text-white border-2 border-[#EA580C] shadow-xs group-hover:scale-105 transition-all">
+              <User className="w-5 h-5 text-[#EA580C]" />
             </div>
-            <div className="text-[10px] font-mono-tech text-[#55534E]">
+            <span
+              className="w-3 h-3 rounded-full bg-[#10B981] border-2 border-white absolute -bottom-0.5 -right-0.5 shadow-xs"
+              title="Operator Online"
+            />
+          </div>
+
+          <div className="hidden sm:block text-left">
+            <div className="text-xs font-bold text-[#0F172A] group-hover:text-[#EA580C] transition-colors leading-tight flex items-center gap-1.5">
+              <span>{user ? user.name : 'Cmdr. Alex Vance'}</span>
+              <span className="text-[10px] font-mono-tech px-1.5 py-0.2 rounded bg-[#FEF08A] text-[#0F172A] font-bold border border-[#0F172A]">
+                {user ? user.badgeNumber || 'TP-8842' : 'TP-8842'}
+              </span>
+            </div>
+            <div className="text-[11px] font-semibold text-[#64748B] leading-tight mt-0.5">
               {user ? user.role : 'Central Control Officer'}
             </div>
           </div>

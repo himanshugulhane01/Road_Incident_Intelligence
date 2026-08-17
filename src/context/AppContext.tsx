@@ -197,9 +197,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(true);
   const [videoDuration, setVideoDuration] = useState<number>(60);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
-  const [videoSourceType, setVideoSourceType] = useState<'SAMPLE_CANVAS' | 'UPLOADED' | 'PRESET_CAMERA'>('SAMPLE_CANVAS');
-  const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null);
-  const [activeVideoName, setActiveVideoName] = useState<string>('CAM-02: City Square Flyover (Live Synthetic CCTV Feed)');
+  const [videoSourceType, setVideoSourceType] = useState<'SAMPLE_CANVAS' | 'UPLOADED' | 'PRESET_CAMERA'>('UPLOADED');
+  const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>('/VP/Video Project rii.mp4');
+  const [activeVideoName, setActiveVideoName] = useState<string>('CAM-02: City Junction (CCTV Tactical Feed)');
 
   // AI Detection State
   const [isAnalysisActive, setIsAnalysisActive] = useState<boolean>(true);

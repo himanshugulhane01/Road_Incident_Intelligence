@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import http from 'http';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
@@ -201,12 +202,14 @@ async function startServer() {
     });
   });
 
+  const httpServer = http.createServer(app);
+
   // ==========================================
   // VITE MIDDLEWARE SETUP
   // ==========================================
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: { middlewareMode: true, hmr: { server: httpServer } },
       appType: 'spa',
     });
     app.use(vite.middlewares);
@@ -218,8 +221,22 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[RoadGuard AI] Server running on http://localhost:${PORT}`);
+  let currentPort = PORT;
+
+  httpServer.on('error', (err: any) => {
+    if (err.code === 'EADDRINUSE') {
+      console.warn(`[RoadGuard AI] Port ${currentPort} is in use. Trying port ${currentPort + 1}...`);
+      currentPort++;
+      setTimeout(() => {
+        httpServer.listen(currentPort, '0.0.0.0');
+      }, 200);
+    } else {
+      console.error('[RoadGuard AI] Server error:', err);
+    }
+  });
+
+  httpServer.listen(currentPort, '0.0.0.0', () => {
+    console.log(`[RoadGuard AI] Server running on http://localhost:${currentPort}`);
   });
 }
 

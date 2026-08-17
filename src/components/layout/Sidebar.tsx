@@ -68,7 +68,7 @@ export const Sidebar: React.FC = () => {
   return (
     <aside
       id="roadguard-sidebar"
-      className="w-64 flex flex-col justify-between shrink-0 select-none h-full overflow-y-auto bg-[#E5E3DC] border-r border-[#CFCDC4]"
+      className="w-64 flex flex-col justify-between shrink-0 select-none h-full overflow-y-auto bg-[#FFFFFF] border-r border-[#CBD5E1]"
     >
       {/* Nav Groups */}
       <div className="p-3.5 space-y-5 pt-5">
@@ -77,7 +77,7 @@ export const Sidebar: React.FC = () => {
           return (
             <div key={group}>
               <div
-                className="px-3 mb-2 text-[10px] font-mono-tech text-[#55534E] tracking-widest uppercase font-bold"
+                className="px-3 mb-2 text-[11px] font-mono-tech text-[#334155] tracking-widest uppercase font-bold"
               >
                 // {group}
               </div>
@@ -90,17 +90,18 @@ export const Sidebar: React.FC = () => {
                       key={item.id}
                       id={`nav-link-${item.id}`}
                       onClick={() => setCurrentRoute(item.id)}
-                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-mono-tech transition-all cursor-pointer ${
-                        isActive ? 'nav-item-active' : 'hover:bg-[#DFDDD5] text-[#141414] border border-transparent'
+                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all cursor-pointer ${
+                        isActive ? 'nav-item-active' : 'hover:bg-[#F1F5F9] text-[#0F172A] border border-transparent'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <Icon
                           className="w-4 h-4 shrink-0"
-                          style={{ color: isActive ? '#FF5722' : '#55534E' }}
+                          style={{ color: isActive ? '#EA580C' : '#334155' }}
                         />
                         <span
-                          className="tracking-wider uppercase font-semibold"
+                          className="tracking-wide font-semibold text-[#0F172A]"
+                          style={{ color: isActive ? '#FFFFFF' : '#0F172A' }}
                         >
                           {item.label}
                         </span>

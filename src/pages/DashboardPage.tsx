@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ShieldAlert,
   Activity,
@@ -13,9 +13,11 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { VideoPlayer } from '../components/video/VideoPlayer';
+import { VideoUploadModal } from '../components/video/VideoUploadModal';
 import { DetectionFilterBar } from '../components/video/DetectionFilterBar';
 import { DetectionTimeline } from '../components/video/DetectionTimeline';
 import { GradientWaves } from '../components/ui/GradientWaves';
+import { ThreeDTiltCard } from '../components/ui/ThreeDTiltCard';
 
 const KineticMetricCard: React.FC<{
   title: string;
@@ -27,32 +29,34 @@ const KineticMetricCard: React.FC<{
   route: string;
   setRoute: (r: string) => void;
 }> = ({ title, value, sub, icon: Icon, accentColor, route, setRoute }) => (
-  <div
-    onClick={() => setRoute(route)}
-    className="metric-card p-4 md:p-5 rounded-xl cursor-pointer bg-[#FFFFFF] border border-[#CFCDC4] transition-all hover:-translate-y-1 hover:border-[#161616]"
-    style={{
-      minHeight: 110,
-    }}
-  >
-    <div className="flex items-start justify-between mb-2">
-      <span className="data-label font-mono-tech text-[10px] text-[#55534E]">{title}</span>
-      <div
-        className="w-7 h-7 rounded-lg flex items-center justify-center bg-[#161616] text-[#FF5722]"
-      >
-        <Icon className="w-3.5 h-3.5" />
+  <ThreeDTiltCard onClick={() => setRoute(route)} maxTilt={10}>
+    <div
+      className="metric-card p-4 md:p-5 rounded-xl cursor-pointer bg-[#FFFFFF] border border-[#CBD5E1] transition-all hover:border-[#0F172A]"
+      style={{
+        minHeight: 110,
+      }}
+    >
+      <div className="flex items-start justify-between mb-2">
+        <span className="data-label font-sans text-xs font-semibold text-[#334155]">{title}</span>
+        <div
+          className="w-7.5 h-7.5 rounded-lg flex items-center justify-center bg-[#0F172A] text-[#EA580C]"
+        >
+          <Icon className="w-4 h-4" />
+        </div>
+      </div>
+      <div className="font-display text-3xl md:text-4xl font-bold tracking-tight text-[#0F172A] my-1">
+        {value}
+      </div>
+      <div className="flex items-center justify-between mt-2">
+        <span className="text-xs font-medium text-[#475569]">{sub}</span>
+        <ArrowRight className="w-4 h-4 text-[#EA580C]" />
       </div>
     </div>
-    <div className="font-display text-3xl md:text-4xl tracking-wider text-[#141414] my-1">
-      {value}
-    </div>
-    <div className="flex items-center justify-between mt-2">
-      <span className="text-[11px] font-mono-tech text-[#55534E]">{sub}</span>
-      <ArrowRight className="w-3.5 h-3.5 text-[#161616]" />
-    </div>
-  </div>
+  </ThreeDTiltCard>
 );
 
 export const DashboardPage: React.FC = () => {
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
   const {
     stats,
     setCurrentRoute,
@@ -191,55 +195,52 @@ export const DashboardPage: React.FC = () => {
       </div>
 
       {/* Main 2-column Layout */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* LEFT: Live Feed + Controls */}
-        <div className="xl:col-span-2 space-y-4">
-          {/* Section header */}
-          <div className="flex items-center justify-between px-1">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+        {/* LEFT: Primary Tactical Feed, Filters & Timeline */}
+        <div className="xl:col-span-2 space-y-5">
+          {/* Tactical Feed Header */}
+          <div className="flex items-center justify-between px-1 py-0.5">
             <div className="flex items-center gap-2.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#FF5722] animate-pulse" />
-              <h2
-                className="text-2xl font-display tracking-wide text-[#141414]"
-              >
+              <span className="w-2.5 h-2.5 rounded-full bg-[#EA580C] animate-pulse" />
+              <h2 className="text-xl font-bold font-display tracking-tight text-[#0F172A]">
                 PRIMARY CCTV TACTICAL FEED
               </h2>
             </div>
-            <span className="text-xs font-mono-tech text-[#55534E]">
-              NEURAL ENGINE: <span className="text-[#FF5722] bg-[#161616] px-1.5 py-0.5 rounded font-bold">ONLINE</span>
-            </span>
+            <div className="flex items-center gap-2 text-xs font-semibold text-[#475569]">
+              <span>NEURAL ENGINE:</span>
+              <span className="text-white bg-[#0F172A] px-2 py-0.5 rounded-md font-bold text-[11px]">
+                ONLINE
+              </span>
+            </div>
           </div>
 
-          <VideoPlayer />
+          <VideoPlayer onOpenUploadModal={() => setIsUploadModalOpen(true)} />
           <DetectionFilterBar />
           <DetectionTimeline />
         </div>
 
-        {/* RIGHT: Intelligence Panels */}
-        <div className="space-y-6">
-          {/* Active Incidents Panel */}
-          <div className="light-card rounded-2xl overflow-hidden p-2">
-            <div
-              className="px-4 py-3 flex items-center justify-between bg-[#161616] text-[#FFFFFF] rounded-xl mb-2"
-            >
+        {/* RIGHT: Active Priority Incidents & Camera Network */}
+        <div className="space-y-5">
+          {/* Active Priority Incidents Panel */}
+          <div className="light-card rounded-2xl overflow-hidden p-2.5 border border-[#CBD5E1] bg-white shadow-xs">
+            <div className="px-4 py-3 flex items-center justify-between bg-[#0F172A] text-white rounded-xl mb-3">
               <div className="flex items-center gap-2.5">
-                <AlertTriangle className="w-4 h-4 text-[#FF5722]" />
-                <h3
-                  className="text-lg font-display tracking-wider text-white"
-                >
+                <AlertTriangle className="w-4.5 h-4.5 text-[#EA580C]" />
+                <h3 className="text-sm font-bold font-display tracking-wide text-white">
                   ACTIVE PRIORITY INCIDENTS
                 </h3>
               </div>
               <button
                 onClick={() => setCurrentRoute('incidents')}
-                className="text-xs font-mono-tech text-[#FF5722] hover:underline"
+                className="text-xs font-semibold text-[#EA580C] hover:underline cursor-pointer"
               >
-                ▸ ALL ({incidents.length})
+                ▸ VIEW ALL ({incidents.length})
               </button>
             </div>
 
-            <div className="p-1 space-y-2 max-h-72 overflow-y-auto">
+            <div className="p-1 space-y-2.5 max-h-[320px] overflow-y-auto">
               {incidents.length === 0 ? (
-                <div className="py-8 text-center font-mono-tech text-xs text-[#55534E]">
+                <div className="py-8 text-center text-xs font-medium text-[#64748B]">
                   NO ACTIVE INCIDENTS DETECTED.
                 </div>
               ) : (
@@ -247,13 +248,13 @@ export const DashboardPage: React.FC = () => {
                   <div
                     key={inc.id}
                     onClick={() => setSelectedIncident(inc)}
-                    className="p-3.5 rounded-xl cursor-pointer transition-all hover:translate-x-1 bg-[#FFFFFF] border border-[#CFCDC4]"
+                    className="p-3.5 rounded-xl cursor-pointer transition-all hover:translate-x-1 bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#0F172A]"
                     style={{
                       borderLeft: `4px solid ${getSeverityColor(inc.severity)}`,
                     }}
                   >
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs font-bold font-mono-tech text-[#141414]">
+                      <span className="text-xs font-bold text-[#0F172A]">
                         {inc.title}
                       </span>
                       <span
@@ -268,12 +269,12 @@ export const DashboardPage: React.FC = () => {
                         {inc.severity}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between font-mono-tech text-[11px]">
-                      <span className="text-[#55534E]">
+                    <div className="flex items-center justify-between text-xs text-[#475569]">
+                      <span className="font-medium text-[11px]">
                         {inc.camera}
                       </span>
                       {inc.numberPlate && (
-                        <span className="font-bold text-[#141414] bg-[#DFDDD5] px-1.5 py-0.5 rounded">
+                        <span className="font-bold text-[11px] font-mono-tech text-[#0F172A] bg-[#E2E8F0] px-2 py-0.5 rounded">
                           {inc.numberPlate}
                         </span>
                       )}
@@ -285,47 +286,43 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           {/* Camera Network Panel */}
-          <div className="light-card rounded-2xl overflow-hidden p-2">
-            <div
-              className="px-4 py-3 flex items-center justify-between bg-[#161616] text-[#FFFFFF] rounded-xl mb-2"
-            >
+          <div className="light-card rounded-2xl overflow-hidden p-2.5 border border-[#CBD5E1] bg-white shadow-xs">
+            <div className="px-4 py-3 flex items-center justify-between bg-[#0F172A] text-white rounded-xl mb-3">
               <div className="flex items-center gap-2.5">
-                <Camera className="w-4 h-4 text-[#FF5722]" />
-                <h3
-                  className="text-lg font-display tracking-wider text-white"
-                >
+                <Camera className="w-4.5 h-4.5 text-[#EA580C]" />
+                <h3 className="text-sm font-bold font-display tracking-wide text-white">
                   CAMERA NETWORK
                 </h3>
               </div>
               <button
                 onClick={() => setCurrentRoute('cameras')}
-                className="text-xs font-mono-tech text-[#FF5722] hover:underline"
+                className="text-xs font-semibold text-[#EA580C] hover:underline cursor-pointer"
               >
                 ▸ MANAGE
               </button>
             </div>
 
-            <div className="p-1 grid grid-cols-2 gap-2">
+            <div className="p-1 grid grid-cols-2 gap-2.5">
               {cameras.map((cam) => (
                 <div
                   key={cam.id}
-                  className="p-3 rounded-xl bg-[#FFFFFF] border border-[#CFCDC4] transition-all hover:border-[#161616]"
+                  className="p-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] transition-all hover:border-[#0F172A]"
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="font-mono-tech font-bold text-xs text-[#141414]">
+                    <span className="font-mono-tech font-bold text-xs text-[#0F172A]">
                       {cam.id}
                     </span>
                     <span
                       className={cam.status === 'ONLINE' ? 'badge-ok' : 'badge-critical'}
-                      style={{ fontSize: 9, padding: '2px 5px' }}
+                      style={{ fontSize: 10, padding: '2px 6px' }}
                     >
                       {cam.status === 'ONLINE' ? '● ON' : '● OFF'}
                     </span>
                   </div>
-                  <div className="text-[11px] text-[#55534E] font-medium truncate">
+                  <div className="text-xs text-[#475569] font-medium truncate">
                     {cam.location}
                   </div>
-                  <div className="font-mono-tech text-[10px] text-[#141414] font-bold mt-1">
+                  <div className="font-mono-tech text-[10px] text-[#0F172A] font-bold mt-1.5">
                     {cam.totalDetectionsToday} DETECTIONS
                   </div>
                 </div>
@@ -334,6 +331,12 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Video Upload Modal */}
+      <VideoUploadModal
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+      />
     </div>
   );
 };

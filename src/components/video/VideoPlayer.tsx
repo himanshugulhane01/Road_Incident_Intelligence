@@ -47,26 +47,10 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
   const videoElementRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Time advancement loop for synthetic canvas or fallback
-  useEffect(() => {
-    if (!isVideoPlaying) return;
-
-    const interval = setInterval(() => {
-      setVideoCurrentTime((prev) => {
-        if (prev >= videoDuration) {
-          return 0; // loop
-        }
-        return prev + 0.1 * playbackSpeed;
-      });
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [isVideoPlaying, playbackSpeed, videoDuration, setVideoCurrentTime]);
-
-  // Sync HTML5 video tag if uploaded
+  // Sync HTML5 video playback state & rate
   useEffect(() => {
     const el = videoElementRef.current;
-    if (!el || videoSourceType !== 'UPLOADED') return;
+    if (!el) return;
 
     if (isVideoPlaying && el.paused) {
       el.play().catch(() => {});
@@ -74,172 +58,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
       el.pause();
     }
     el.playbackRate = playbackSpeed;
-  }, [isVideoPlaying, playbackSpeed, videoSourceType]);
+  }, [isVideoPlaying, playbackSpeed]);
 
-  // Synthetic CCTV Canvas Generator (Renders road, vehicles, lane markers, traffic lights)
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || videoSourceType === 'UPLOADED') return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationFrameId: number;
-
-    const render = () => {
-      const w = canvas.width;
-      const h = canvas.height;
-      const time = videoCurrentTime;
-
-      // 1. Asphalt Road Surface
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(0, 0, w, h);
-
-      // Road Perspective
-      const roadTop = h * 0.25;
-      const roadBottom = h;
-      const roadTopLeft = w * 0.35;
-      const roadTopRight = w * 0.65;
-      const roadBottomLeft = 0;
-      const roadBottomRight = w;
-
-      // Draw Main Road Polygon
-      ctx.fillStyle = '#1e293b';
-      ctx.beginPath();
-      ctx.moveTo(roadTopLeft, roadTop);
-      ctx.lineTo(roadTopRight, roadTop);
-      ctx.lineTo(roadBottomRight, roadBottom);
-      ctx.lineTo(roadBottomLeft, roadBottom);
-      ctx.closePath();
-      ctx.fill();
-
-      // Road Borders & Curbs
-      ctx.strokeStyle = '#64748b';
-      ctx.lineWidth = 3;
-      ctx.stroke();
-
-      // Center Lane Dashed Lines
-      ctx.strokeStyle = '#facc15';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([12, 12]);
-      ctx.beginPath();
-      ctx.moveTo(w * 0.5, roadTop);
-      ctx.lineTo(w * 0.5, roadBottom);
-      ctx.stroke();
-
-      // Secondary Lane Dividers
-      ctx.strokeStyle = '#e2e8f0';
-      ctx.setLineDash([8, 14]);
-      ctx.beginPath();
-      ctx.moveTo(w * 0.42, roadTop);
-      ctx.lineTo(w * 0.25, roadBottom);
-      ctx.moveTo(w * 0.58, roadTop);
-      ctx.lineTo(w * 0.75, roadBottom);
-      ctx.stroke();
-      ctx.setLineDash([]); // Reset line dash
-
-      // Crosswalk / Stop Bar
-      ctx.fillStyle = '#cbd5e1';
-      for (let i = 0; i < 9; i++) {
-        const xOffset = w * 0.28 + i * (w * 0.05);
-        ctx.fillRect(xOffset, h * 0.78, w * 0.035, 12);
-      }
-
-      // Background Scenery / Overpass
-      ctx.fillStyle = '#090d16';
-      ctx.fillRect(0, 0, w, roadTop);
-      ctx.fillStyle = '#334155';
-      ctx.fillRect(w * 0.1, roadTop - 40, w * 0.8, 14);
-
-      // Traffic Signal Light Simulation
-      const lightX = w * 0.88;
-      const lightY = roadTop - 20;
-      ctx.fillStyle = '#111827';
-      ctx.fillRect(lightX - 8, lightY - 24, 16, 48);
-      // Red light or Green light depending on time
-      const isRedPhase = Math.floor(time) >= 36 && Math.floor(time) <= 42;
-      ctx.fillStyle = isRedPhase ? '#ef4444' : '#22c55e';
-      ctx.beginPath();
-      ctx.arc(lightX, isRedPhase ? lightY - 14 : lightY + 14, 6, 0, Math.PI * 2);
-      ctx.fill();
-
-      // 2. Animated Simulated Vehicles (Moving down perspective)
-      const tMod = time % 12;
-
-      // Vehicle 1: Motorcycle (MH27AB1234)
-      const v1Progress = (time * 0.08) % 1;
-      const v1X = w * 0.48 - (w * 0.05) * v1Progress;
-      const v1Y = roadTop + (roadBottom - roadTop) * v1Progress;
-      const v1Scale = 0.4 + v1Progress * 0.8;
-
-      ctx.save();
-      ctx.translate(v1X, v1Y);
-      ctx.scale(v1Scale, v1Scale);
-      // Bike Body
-      ctx.fillStyle = '#0284c7';
-      ctx.fillRect(-8, -20, 16, 40);
-      // Rider Head
-      ctx.fillStyle = '#f59e0b';
-      ctx.beginPath();
-      ctx.arc(0, -6, 7, 0, Math.PI * 2);
-      ctx.fill();
-      // Headlight glow
-      ctx.fillStyle = 'rgba(255, 255, 200, 0.3)';
-      ctx.beginPath();
-      ctx.moveTo(-10, 20);
-      ctx.lineTo(-30, 80);
-      ctx.lineTo(30, 80);
-      ctx.lineTo(10, 20);
-      ctx.fill();
-      ctx.restore();
-
-      // Vehicle 2: SUV / Car (Moving across)
-      const v2Progress = ((time + 4) * 0.06) % 1;
-      const v2X = w * 0.58 + (w * 0.15) * v2Progress;
-      const v2Y = roadTop + (roadBottom - roadTop) * v2Progress;
-      const v2Scale = 0.5 + v2Progress * 0.9;
-
-      ctx.save();
-      ctx.translate(v2X, v2Y);
-      ctx.scale(v2Scale, v2Scale);
-      // Car Body
-      ctx.fillStyle = '#dc2626';
-      ctx.fillRect(-22, -35, 44, 70);
-      // Roof / Windshield
-      ctx.fillStyle = '#1e293b';
-      ctx.fillRect(-16, -18, 32, 36);
-      ctx.restore();
-
-      // Pedestrian on Crosswalk (Campus or junction)
-      const pedProgress = ((time + 2) * 0.05) % 1;
-      const pedX = w * 0.2 + (w * 0.6) * pedProgress;
-      const pedY = h * 0.78 + 6;
-      ctx.fillStyle = '#e2e8f0';
-      ctx.beginPath();
-      ctx.arc(pedX, pedY, 4, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Optical CCTV Watermark & Grid
-      ctx.fillStyle = 'rgba(16, 185, 129, 0.75)';
-      ctx.font = '11px monospace';
-      ctx.fillText(
-        `● LIVE CCTV | ${activeVideoName.slice(0, 30)} | ${formatTime(time)} / 01:00 | 30 FPS`,
-        14,
-        24
-      );
-
-      ctx.fillStyle = 'rgba(244, 63, 94, 0.8)';
-      ctx.fillText('REC [SIMULATED FEED]', w - 150, 24);
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [videoCurrentTime, videoSourceType, activeVideoName]);
+  const handleSeek = (newTime: number) => {
+    setVideoCurrentTime(newTime);
+    if (videoElementRef.current) {
+      videoElementRef.current.currentTime = newTime;
+    }
+  };
 
   const toggleFullscreen = () => {
     if (!containerRef.current) return;
@@ -250,6 +76,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
     }
   };
 
+  const videoSourceUrl = uploadedVideoUrl || '/VP/Video Project rii.mp4';
+
   return (
     <div
       ref={containerRef}
@@ -259,27 +87,26 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
     >
       {/* Video Stream Stage */}
       <div className="relative aspect-video w-full bg-slate-950 flex items-center justify-center overflow-hidden">
-        {videoSourceType === 'UPLOADED' && uploadedVideoUrl ? (
-          <video
-            ref={videoElementRef}
-            src={uploadedVideoUrl}
-            className="w-full h-full object-contain"
-            playsInline
-            onTimeUpdate={(e) => {
-              setVideoCurrentTime(e.currentTarget.currentTime);
-              if (e.currentTarget.duration) {
-                setVideoDuration(e.currentTarget.duration);
-              }
-            }}
-          />
-        ) : (
-          <canvas
-            ref={canvasRef}
-            width={960}
-            height={540}
-            className="w-full h-full object-cover"
-          />
-        )}
+        <video
+          ref={videoElementRef}
+          src={videoSourceUrl}
+          className="w-full h-full object-cover"
+          playsInline
+          autoPlay
+          loop
+          muted={false}
+          onTimeUpdate={(e) => {
+            setVideoCurrentTime(e.currentTarget.currentTime);
+            if (e.currentTarget.duration && !isNaN(e.currentTarget.duration)) {
+              setVideoDuration(e.currentTarget.duration);
+            }
+          }}
+          onLoadedMetadata={(e) => {
+            if (e.currentTarget.duration && !isNaN(e.currentTarget.duration)) {
+              setVideoDuration(e.currentTarget.duration);
+            }
+          }}
+        />
 
         {/* AI Bounding Box Overlay */}
         <DetectionOverlay />
@@ -317,7 +144,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
             max={videoDuration}
             step={0.1}
             value={videoCurrentTime}
-            onChange={(e) => setVideoCurrentTime(parseFloat(e.target.value))}
+            onChange={(e) => handleSeek(parseFloat(e.target.value))}
             className="flex-1 h-2 rounded-lg appearance-none cursor-pointer"
             style={{ accentColor: '#FF5722', background: '#FFF0E6' }}
           />
@@ -378,7 +205,12 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
             {[0.5, 1, 1.5, 2].map((spd) => (
               <button
                 key={spd}
-                onClick={() => setPlaybackSpeed(spd)}
+                onClick={() => {
+                  setPlaybackSpeed(spd);
+                  if (videoElementRef.current) {
+                    videoElementRef.current.playbackRate = spd;
+                  }
+                }}
                 className="px-2.5 py-1 rounded-lg transition-all cursor-pointer font-bold"
                 style={{
                   fontFamily: "'JetBrains Mono', monospace",

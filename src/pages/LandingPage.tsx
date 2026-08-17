@@ -255,14 +255,6 @@ export const LandingPage: React.FC = () => {
               <UserPlus className="w-3.5 h-3.5" />
               <span>CREATE ACCOUNT</span>
             </button>
-
-            <button
-              onClick={() => setCurrentRoute('dashboard')}
-              className="btn-primary flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold shadow-lg hover:scale-105 transition-all ml-1 cursor-pointer"
-            >
-              <span>LAUNCH DASHBOARD</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </header>

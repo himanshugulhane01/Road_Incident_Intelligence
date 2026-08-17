@@ -72,7 +72,7 @@ const AppContent: React.FC = () => {
     }
   };
   return (
-    <div className="flex h-screen w-screen overflow-hidden text-[#141414] font-body bg-grain-light bg-grid-lines-light antialiased">
+    <div className="flex h-screen w-screen overflow-hidden text-[#0F172A] font-body bg-grain-light bg-grid-lines-light antialiased">
       {/* Primary Sidebar */}
       <Sidebar />
 
