@@ -6,6 +6,8 @@ import {
   AlertTriangle,
   CheckCircle2,
   ArrowRight,
+  ArrowLeft,
+  ArrowUp,
   Sparkles,
   Lock,
   Play,
@@ -440,6 +442,17 @@ export const LandingPage: React.FC = () => {
 
       {/* 1. FEATURES INFO SECTION */}
       <section id="features" className="py-16 max-w-[1440px] mx-auto px-6">
+        <div className="flex justify-start mb-2">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#CBD5E1] text-[#0F172A] hover:bg-[#F8FAFC] hover:border-[#0F172A] text-xs font-bold transition-all cursor-pointer shadow-xs"
+            title="Back to top"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[#EA580C]" />
+            <span>Back to Top</span>
+          </button>
+        </div>
+
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
           <span className="badge-info font-bold">CORE CAPABILITIES</span>
           <h2 className="text-3xl md:text-4xl font-black text-[#1C1917]">
@@ -485,6 +498,17 @@ export const LandingPage: React.FC = () => {
 
       {/* 2. NEURAL OCR INFO SECTION */}
       <section id="neural-ocr" className="py-12 max-w-[1440px] mx-auto px-6">
+        <div className="flex justify-start mb-4">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#CBD5E1] text-[#0F172A] hover:bg-[#F8FAFC] hover:border-[#0F172A] text-xs font-bold transition-all cursor-pointer shadow-xs"
+            title="Back to top"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[#EA580C]" />
+            <span>Back to Top</span>
+          </button>
+        </div>
+
         <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-black/5 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-6 space-y-6">
             <span className="badge-warning font-bold">NEURAL PERCEPTION</span>
@@ -555,6 +579,17 @@ export const LandingPage: React.FC = () => {
 
       {/* 3. ANALYTICS INFO SECTION */}
       <section id="analytics-info" className="py-16 max-w-[1440px] mx-auto px-6">
+        <div className="flex justify-start mb-2">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#CBD5E1] text-[#0F172A] hover:bg-[#F8FAFC] hover:border-[#0F172A] text-xs font-bold transition-all cursor-pointer shadow-xs"
+            title="Back to top"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[#EA580C]" />
+            <span>Back to Top</span>
+          </button>
+        </div>
+
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
           <span className="badge-info font-bold">DATA INTELLIGENCE</span>
           <h2 className="text-3xl md:text-4xl font-black text-[#1C1917]">
@@ -600,6 +635,17 @@ export const LandingPage: React.FC = () => {
 
       {/* 4. AGENCY CONTROL INFO SECTION */}
       <section id="agency-control" className="py-12 max-w-[1440px] mx-auto px-6">
+        <div className="flex justify-start mb-4">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#CBD5E1] text-[#0F172A] hover:bg-[#F8FAFC] hover:border-[#0F172A] text-xs font-bold transition-all cursor-pointer shadow-xs"
+            title="Back to top"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[#EA580C]" />
+            <span>Back to Top</span>
+          </button>
+        </div>
+
         <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-black/5 text-center space-y-6">
           <span className="badge-warning font-bold">SMART CITY INTEGRATION</span>
           <h2 className="text-3xl md:text-5xl font-black text-[#1C1917] max-w-3xl mx-auto">
@@ -632,6 +678,16 @@ export const LandingPage: React.FC = () => {
 
       {/* 5. CONTACT DETAILS & EMAIL IDS SECTION */}
       <section id="contact" className="py-16 max-w-[1440px] mx-auto px-6">
+        <div className="flex justify-start mb-4">
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#CBD5E1] text-[#0F172A] hover:bg-[#F8FAFC] hover:border-[#0F172A] text-xs font-bold transition-all cursor-pointer shadow-xs"
+            title="Back to top"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[#EA580C]" />
+            <span>Back to Top</span>
+          </button>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Contact Details Column */}
           <div className="lg:col-span-5 space-y-8">
@@ -771,6 +827,17 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Floating Back to Top Button */}
+      <button
+        id="floating-back-to-top-btn"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed bottom-6 right-6 z-40 p-3.5 rounded-2xl bg-[#0F172A] text-white hover:bg-[#EA580C] border border-white/20 shadow-xl transition-all cursor-pointer flex items-center gap-2 group"
+        title="Scroll back to top"
+      >
+        <ArrowUp className="w-4 h-4 text-[#EA580C] group-hover:text-white transition-colors" />
+        <span className="text-xs font-bold font-mono-tech hidden sm:inline">Back to Top</span>
+      </button>
     </div>
   );
 };

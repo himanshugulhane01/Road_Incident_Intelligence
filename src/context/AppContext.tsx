@@ -60,6 +60,7 @@ interface AppContextType {
   videoSourceType: 'SAMPLE_CANVAS' | 'UPLOADED' | 'PRESET_CAMERA';
   uploadedVideoUrl: string | null;
   activeVideoName: string;
+  activeCameraId: string;
   setUploadedVideo: (file: File) => void;
   loadSamplePreset: (presetId: string) => void;
 
@@ -194,12 +195,13 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   // Video State
   const [videoCurrentTime, setVideoCurrentTime] = useState<number>(0);
-  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [videoDuration, setVideoDuration] = useState<number>(60);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
-  const [videoSourceType, setVideoSourceType] = useState<'SAMPLE_CANVAS' | 'UPLOADED' | 'PRESET_CAMERA'>('UPLOADED');
+  const [activeCameraId, setActiveCameraId] = useState<string>('CAM-01');
+  const [videoSourceType, setVideoSourceType] = useState<'SAMPLE_CANVAS' | 'UPLOADED' | 'PRESET_CAMERA'>('PRESET_CAMERA');
   const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>('/VP/Video Project rii.mp4');
-  const [activeVideoName, setActiveVideoName] = useState<string>('CAM-02: City Junction (CCTV Tactical Feed)');
+  const [activeVideoName, setActiveVideoName] = useState<string>('CAM-01: Sector 4 Junction - Main Arterial Road');
 
   // AI Detection State
   const [isAnalysisActive, setIsAnalysisActive] = useState<boolean>(true);
@@ -270,11 +272,22 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   }, []);
 
   const loadSamplePreset = useCallback((presetId: string) => {
-    setUploadedVideoUrl(null);
-    setVideoSourceType('SAMPLE_CANVAS');
-    const cam = INITIAL_CAMERAS.find((c) => c.id === presetId) || INITIAL_CAMERAS[1];
-    setActiveVideoName(`${cam.id}: ${cam.name} (Live Synthetic CCTV Feed)`);
-    setVideoCurrentTime(0);
+    const cam = INITIAL_CAMERAS.find((c) => c.id === presetId) || INITIAL_CAMERAS[0];
+    setActiveCameraId(cam.id);
+    setUploadedVideoUrl('/VP/Video Project rii.mp4');
+    setVideoSourceType('PRESET_CAMERA');
+    setActiveVideoName(`${cam.id}: ${cam.name}`);
+
+    // Set distinct initial camera video timestamp offsets for CAM-01, CAM-02, CAM-03, CAM-04
+    const offsets: Record<string, number> = {
+      'CAM-01': 0,
+      'CAM-02': 14,
+      'CAM-03': 28,
+      'CAM-04': 42,
+    };
+    const targetOffset = offsets[cam.id] !== undefined ? offsets[cam.id] : 0;
+    setVideoCurrentTime(targetOffset);
+    seekTargetRef.current = targetOffset;
     processedEventIds.current.clear();
     setIsVideoPlaying(true);
     setIsAnalysisActive(true);
@@ -476,6 +489,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         videoSourceType,
         uploadedVideoUrl,
         activeVideoName,
+        activeCameraId,
         setUploadedVideo,
         loadSamplePreset,
         isAnalysisActive,

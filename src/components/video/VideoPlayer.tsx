@@ -32,6 +32,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
     videoSourceType,
     uploadedVideoUrl,
     activeVideoName,
+    activeCameraId,
     isAnalysisActive,
     startAnalysis,
     pauseAnalysis,
@@ -46,6 +47,21 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const videoElementRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // Sync video currentTime when camera changes
+  useEffect(() => {
+    const el = videoElementRef.current;
+    if (!el) return;
+
+    const offsets: Record<string, number> = {
+      'CAM-01': 0,
+      'CAM-02': 14,
+      'CAM-03': 28,
+      'CAM-04': 42,
+    };
+    const target = offsets[activeCameraId] !== undefined ? offsets[activeCameraId] : 0;
+    el.currentTime = target;
+  }, [activeCameraId]);
 
   // Sync HTML5 video playback state & rate
   useEffect(() => {
@@ -76,6 +92,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
     }
   };
 
+  const cameraFilterStyle: Record<string, string> = {
+    'CAM-01': 'contrast(1.05) brightness(1.0)',
+    'CAM-02': 'contrast(1.25) brightness(0.92) saturate(1.2)',
+    'CAM-03': 'contrast(1.22) brightness(1.05) sepia(0.15) hue-rotate(-15deg)',
+    'CAM-04': 'contrast(1.08) brightness(1.1) saturate(0.85)',
+  };
+
+  const currentVideoFilter = cameraFilterStyle[activeCameraId] || 'none';
   const videoSourceUrl = uploadedVideoUrl || '/VP/Video Project rii.mp4';
 
   return (
@@ -90,11 +114,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
         <video
           ref={videoElementRef}
           src={videoSourceUrl}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-all duration-300"
+          style={{ filter: currentVideoFilter }}
           playsInline
-          autoPlay
-          loop
-          muted={false}
           onTimeUpdate={(e) => {
             setVideoCurrentTime(e.currentTarget.currentTime);
             if (e.currentTarget.duration && !isNaN(e.currentTarget.duration)) {
@@ -105,6 +127,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
             if (e.currentTarget.duration && !isNaN(e.currentTarget.duration)) {
               setVideoDuration(e.currentTarget.duration);
             }
+          }}
+          onEnded={() => {
+            setIsVideoPlaying(false);
           }}
         />
 
@@ -231,14 +256,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ onOpenUploadModal }) =
           {/* Camera Preset Switcher */}
           <select
             id="camera-preset-selector"
+            value={activeCameraId}
             onChange={(e) => loadSamplePreset(e.target.value)}
             className="input-field cursor-pointer font-bold"
-            defaultValue="CAM-02"
             style={{ width: 'auto', padding: '6px 12px', fontSize: 11 }}
           >
             {cameras.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.id} — {c.name.slice(0, 20)}
+                {c.id} — {c.name.slice(0, 24)}
               </option>
             ))}
           </select>
