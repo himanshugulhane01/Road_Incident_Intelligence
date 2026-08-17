@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CreditCard, Search, Download, Eye, Filter } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { exportDataAsCSV, exportDataAsJSON } from '../utils/helpers';
+import { exportDataAsCSV } from '../utils/helpers';
 
 export const NumberPlatesPage: React.FC = () => {
   const { vehicles, setSelectedVehicle } = useApp();
@@ -48,15 +48,9 @@ export const NumberPlatesPage: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => exportDataAsCSV(vehicles.map(v => ({ VehicleID: v.vehicleId, NumberPlate: v.numberPlate, Type: v.vehicleType, MakeModel: v.makeModel, Color: v.color, Status: v.status, FirstDetected: v.firstDetected, TotalDetections: v.totalDetections })), 'RoadGuard_NumberPlates_Forensics')}
-            className="btn-ghost flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold"
-          >
-            <Download className="w-4 h-4" /> Export CSV
-          </button>
-          <button
-            onClick={() => exportDataAsJSON(vehicles, 'RoadGuard_NumberPlates_Forensics')}
             className="btn-primary flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold shadow-md"
           >
-            <Download className="w-4 h-4" /> Export JSON
+            <Download className="w-4 h-4 text-white" /> <span>Export CSV</span>
           </button>
         </div>
       </div>

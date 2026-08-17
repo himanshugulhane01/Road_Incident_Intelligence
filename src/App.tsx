@@ -17,7 +17,6 @@ import { VehiclesPage } from './pages/VehiclesPage';
 import { PersonsPage } from './pages/PersonsPage';
 import { AlertsPage } from './pages/AlertsPage';
 import { HistoryPage } from './pages/HistoryPage';
-import { AnalyticsPage } from './pages/AnalyticsPage';
 import { CamerasPage } from './pages/CamerasPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ReportIncidentPage } from './pages/ReportIncidentPage';
@@ -25,6 +24,7 @@ import { VehicleRecordModal } from './components/modals/VehicleRecordModal';
 import { PersonRecordModal } from './components/modals/PersonRecordModal';
 import { GlobalSearchModal } from './components/modals/GlobalSearchModal';
 import { IncidentDetailModal } from './components/modals/IncidentDetailModal';
+import { EditProfileModal } from './components/modals/EditProfileModal';
 import { AuthModal } from './components/auth/AuthModal';
 
 const AppContent: React.FC = () => {
@@ -59,8 +59,6 @@ const AppContent: React.FC = () => {
         return <AlertsPage />;
       case 'history':
         return <HistoryPage />;
-      case 'analytics':
-        return <AnalyticsPage />;
       case 'cameras':
         return <CamerasPage />;
       case 'settings':
@@ -94,6 +92,7 @@ const AppContent: React.FC = () => {
       <PersonRecordModal />
       <GlobalSearchModal />
       <IncidentDetailModal />
+      <EditProfileModal />
       <AuthModal />
     </div>
   );

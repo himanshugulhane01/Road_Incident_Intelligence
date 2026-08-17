@@ -4,6 +4,7 @@ import {
   Search,
   Bell,
   User,
+  Edit3,
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
@@ -12,6 +13,7 @@ export const TopNavbar: React.FC = () => {
     unreadAlertCount,
     setIsSearchOpen,
     setCurrentRoute,
+    setIsEditProfileOpen,
     user,
   } = useApp();
 
@@ -67,20 +69,22 @@ export const TopNavbar: React.FC = () => {
       </div>
 
       {/* 2. Center: Centered Global Search Bar */}
-      <div className="flex-1 max-w-lg mx-8 hidden md:block">
+      <div className="flex-1 max-w-xl mx-6 hidden md:block">
         <button
           id="global-search-trigger"
           onClick={() => setIsSearchOpen(true)}
-          className="w-full flex items-center justify-between px-4 py-2 rounded-xl bg-[#F8FAFC] border border-[#CBD5E1] text-[#334155] text-xs font-semibold hover:border-[#0F172A] hover:bg-white transition-all cursor-pointer shadow-xs"
+          className="w-full flex items-center justify-between px-4 py-2.5 rounded-2xl bg-[#F8FAFC] border border-[#CBD5E1] text-[#334155] text-xs font-semibold hover:border-[#EA580C] hover:bg-white hover:shadow-sm transition-all cursor-pointer shadow-xs group"
           title="Search forensic records (Ctrl+K)"
         >
-          <div className="flex items-center gap-2.5">
-            <Search className="w-4 h-4 text-[#0F172A]" />
-            <span className="text-xs font-medium text-[#475569]">▸ SEARCH FORENSICS, PLATES, VEHICLES...</span>
+          <div className="flex items-center gap-3">
+            <Search className="w-4 h-4 text-[#EA580C] group-hover:scale-110 transition-transform" />
+            <span className="text-xs font-semibold text-[#475569]">Search forensics, license plates, vehicles, cameras...</span>
           </div>
-          <kbd className="px-2 py-0.5 rounded bg-[#0F172A] text-[10px] font-mono-tech text-[#EA580C] font-bold border border-[#EA580C]/40">
-            ⌘K
-          </kbd>
+          <div className="flex items-center gap-1">
+            <kbd className="px-2 py-0.5 rounded-lg bg-[#0F172A] text-[10px] font-mono-tech text-[#EA580C] font-bold border border-[#EA580C]/40 shadow-xs">
+              Ctrl + K
+            </kbd>
+          </div>
         </button>
       </div>
 
@@ -119,9 +123,9 @@ export const TopNavbar: React.FC = () => {
         {/* Operator Profile Badge */}
         <div
           id="operator-profile-badge"
-          onClick={() => setCurrentRoute('settings')}
+          onClick={() => setIsEditProfileOpen(true)}
           className="flex items-center gap-3 pl-3.5 border-l border-[#CBD5E1] cursor-pointer group"
-          title="Operator Settings & Profile"
+          title="Edit Operator Profile & Credentials"
         >
           <div className="relative">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#0F172A] text-white border-2 border-[#EA580C] shadow-xs group-hover:scale-105 transition-all">
@@ -140,8 +144,12 @@ export const TopNavbar: React.FC = () => {
                 {user ? user.badgeNumber || 'TP-8842' : 'TP-8842'}
               </span>
             </div>
-            <div className="text-[11px] font-semibold text-[#64748B] leading-tight mt-0.5">
-              {user ? user.role : 'Central Control Officer'}
+            <div className="text-[11px] font-semibold text-[#64748B] leading-tight mt-0.5 flex items-center gap-1">
+              <span>{user ? user.role : 'Central Control Officer'}</span>
+              <span className="text-[10px] font-bold text-[#EA580C] group-hover:underline flex items-center gap-0.5 ml-1">
+                <Edit3 className="w-2.5 h-2.5" />
+                Edit
+              </span>
             </div>
           </div>
         </div>

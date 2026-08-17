@@ -58,7 +58,6 @@ export const Sidebar: React.FC = () => {
       group: 'INTELLIGENCE',
     },
     { id: 'history', label: 'Detection History', icon: History, group: 'ANALYSIS' },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3, group: 'ANALYSIS' },
     { id: 'cameras', label: 'Cameras', icon: Camera, group: 'SYSTEM' },
     { id: 'settings', label: 'Settings', icon: Settings, group: 'SYSTEM' },
   ];

@@ -3,7 +3,8 @@ import {
   Settings2,
   Volume2,
   Sparkles,
-  Code2,
+  User,
+  Edit3,
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { DetectionType } from '../types';
@@ -15,6 +16,8 @@ export const SettingsPage: React.FC = () => {
     settings,
     updateSettings,
     runDemoScenario,
+    user,
+    setIsEditProfileOpen,
   } = useApp();
 
   const detectionCategories: { type: DetectionType; label: string; desc: string }[] = [
@@ -67,6 +70,43 @@ export const SettingsPage: React.FC = () => {
         >
           <Sparkles className="w-4 h-4" />
           <span>Reset & Replay Demo</span>
+        </button>
+      </div>
+
+      {/* Operator Profile Overview Card */}
+      <div className="bg-white rounded-3xl p-6 shadow-xl border border-black/5 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="relative shrink-0">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-[#0F172A] text-white border-2 border-[#EA580C] shadow-md">
+              <User className="w-7 h-7 text-[#EA580C]" />
+            </div>
+            <span className="w-3.5 h-3.5 rounded-full bg-[#10B981] border-2 border-white absolute -bottom-0.5 -right-0.5 shadow-xs" />
+          </div>
+
+          <div className="space-y-1">
+            <div className="flex items-center gap-2.5">
+              <h2 className="text-base font-extrabold text-[#0F172A]">
+                {user ? user.name : 'Cmdr. Alex Vance'}
+              </h2>
+              <span className="text-xs font-mono-tech px-2 py-0.5 rounded-xl bg-[#FEF08A] text-[#0F172A] border border-[#0F172A] font-bold">
+                {user ? user.badgeNumber || 'TP-8842' : 'TP-8842'}
+              </span>
+            </div>
+            <p className="text-xs text-[#64748B] font-semibold">
+              {user ? user.role : 'Central Control Officer'} — {user ? user.agency || 'Central Command' : 'Central Command'}
+            </p>
+            <p className="text-xs text-[#EA580C] font-mono font-bold">
+              Email: {user ? user.email : 'alex.vance@traffic.gov.in'}
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setIsEditProfileOpen(true)}
+          className="btn-primary flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold shadow-md hover:scale-105"
+        >
+          <Edit3 className="w-4 h-4" />
+          <span>Edit Profile Credentials</span>
         </button>
       </div>
 
@@ -169,22 +209,6 @@ export const SettingsPage: React.FC = () => {
               </div>
             );
           })}
-        </div>
-      </div>
-
-      {/* Architecture & Future Integration Guide */}
-      <div className="bg-[#1C1917] text-white p-6 rounded-3xl border border-stone-800 space-y-3 font-sans shadow-2xl">
-        <div className="flex items-center gap-2 text-[#FF5722] font-black text-sm">
-          <Code2 className="w-5 h-5" />
-          <span>Production AI Architecture & YOLO Plug-in Readiness</span>
-        </div>
-        <p className="text-stone-300 leading-relaxed text-xs font-medium">
-          The RoadGuard AI perception pipeline is strictly decoupled from the UI. When integrating real YOLOv8/v11 models, PaddleOCR, DeepSORT/ByteTrack, and PostgreSQL/MongoDB:
-        </p>
-        <div className="p-4 bg-stone-900 rounded-2xl border border-stone-800 text-xs font-mono text-stone-300 space-y-1.5">
-          <div>• <strong>Detection Engine Interface:</strong> Implement <code>DetectionEngine</code> in <code>/src/detection/index.ts</code> to receive frames or RTSP streams and emit <code>DetectionEvent</code> structures.</div>
-          <div>• <strong>ANPR / OCR Service:</strong> Implement <code>OCRService</code> to accept cropped plate regions and return alphanumeric strings + confidence.</div>
-          <div>• <strong>Repository Layer:</strong> Replace <code>MockDetectionRepository</code> in <code>/src/repositories/index.ts</code> with API routes pointing to your database.</div>
         </div>
       </div>
     </div>

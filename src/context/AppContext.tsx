@@ -42,6 +42,9 @@ interface AppContextType {
   login: (email: string, pass: string, name?: string) => void;
   signup: (name: string, email: string, pass: string, agency?: string) => void;
   logout: () => void;
+  updateUserProfile: (updated: Partial<User>) => void;
+  isEditProfileOpen: boolean;
+  setIsEditProfileOpen: React.Dispatch<React.SetStateAction<boolean>>;
 
   // Navigation
   currentRoute: string;
@@ -159,9 +162,17 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Auth State
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>({
+    id: 'USR-8842',
+    name: 'Cmdr. Alex Vance',
+    email: 'alex.vance@traffic.gov.in',
+    role: 'Central Control Officer',
+    agency: 'Central Command',
+    badgeNumber: 'TP-8842',
+  });
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState<boolean>(false);
 
   const login = useCallback((email: string, _pass: string, name?: string) => {
     setUser({
@@ -188,6 +199,20 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const logout = useCallback(() => {
     setUser(null);
     setCurrentRoute('landing');
+  }, []);
+
+  const updateUserProfile = useCallback((updatedData: Partial<User>) => {
+    setUser((prev) => {
+      const current = prev || {
+        id: 'USR-8842',
+        name: 'Cmdr. Alex Vance',
+        email: 'alex.vance@traffic.gov.in',
+        role: 'Central Control Officer',
+        agency: 'Central Command',
+        badgeNumber: 'TP-8842',
+      };
+      return { ...current, ...updatedData };
+    });
   }, []);
 
   // Navigation
@@ -475,6 +500,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         login,
         signup,
         logout,
+        updateUserProfile,
+        isEditProfileOpen,
+        setIsEditProfileOpen,
         currentRoute,
         setCurrentRoute,
         videoCurrentTime,

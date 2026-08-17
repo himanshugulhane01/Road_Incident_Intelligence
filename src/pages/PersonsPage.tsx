@@ -1,7 +1,7 @@
 import React from 'react';
 import { Users, Download, Eye, ShieldCheck, AlertTriangle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { exportDataAsCSV, exportDataAsJSON } from '../utils/helpers';
+import { exportDataAsCSV } from '../utils/helpers';
 
 export const PersonsPage: React.FC = () => {
   const { persons, setSelectedPerson } = useApp();
@@ -38,15 +38,9 @@ export const PersonsPage: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => exportDataAsCSV(persons as unknown as Record<string, unknown>[], 'RoadGuard_Persons')}
-            className="btn-ghost flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold"
-          >
-            <Download className="w-4 h-4" /> Export CSV
-          </button>
-          <button
-            onClick={() => exportDataAsJSON(persons, 'RoadGuard_Persons')}
             className="btn-primary flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold shadow-md"
           >
-            <Download className="w-4 h-4" /> Export JSON
+            <Download className="w-4 h-4 text-white" /> <span>Export CSV</span>
           </button>
         </div>
       </div>

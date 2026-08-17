@@ -236,7 +236,6 @@ export const LandingPage: React.FC = () => {
           <div className="hidden lg:flex items-center gap-7 text-xs font-extrabold text-[#57534E]">
             <a href="#features" className="hover:text-[#FF5722] transition-colors">Features</a>
             <a href="#neural-ocr" className="hover:text-[#FF5722] transition-colors">Neural OCR</a>
-            <a href="#analytics-info" className="hover:text-[#FF5722] transition-colors">Analytics</a>
             <a href="#agency-control" className="hover:text-[#FF5722] transition-colors">Agency Control</a>
             <a href="#contact" className="hover:text-[#FF5722] transition-colors">Contact Us</a>
           </div>
@@ -247,7 +246,7 @@ export const LandingPage: React.FC = () => {
               className="btn-ghost flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl text-xs font-extrabold cursor-pointer"
             >
               <LogIn className="w-3.5 h-3.5" />
-              <span>SIGN IN</span>
+              <span>LOG IN</span>
             </button>
 
             <button
@@ -573,62 +572,6 @@ export const LandingPage: React.FC = () => {
                 <span>Automatic e-Challan dispatch queued for MH-12-AB-9842</span>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. ANALYTICS INFO SECTION */}
-      <section id="analytics-info" className="py-16 max-w-[1440px] mx-auto px-6">
-        <div className="flex justify-start mb-2">
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#CBD5E1] text-[#0F172A] hover:bg-[#F8FAFC] hover:border-[#0F172A] text-xs font-bold transition-all cursor-pointer shadow-xs"
-            title="Back to top"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 text-[#EA580C]" />
-            <span>Back to Top</span>
-          </button>
-        </div>
-
-        <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
-          <span className="badge-info font-bold">DATA INTELLIGENCE</span>
-          <h2 className="text-3xl md:text-4xl font-black text-[#1C1917]">
-            Predictive Traffic Analytics & Forensics
-          </h2>
-          <p className="text-sm font-semibold text-[#78716C]">
-            Gain deep insights into urban accident hotspots, peak violation hours, and vehicle density patterns.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-3xl p-8 shadow-xl border border-black/5 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#FFF0E6] flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-[#FF5722]" />
-            </div>
-            <h3 className="text-xl font-extrabold text-[#1C1917]">Violation Heatmaps</h3>
-            <p className="text-xs text-[#57534E] leading-relaxed font-medium">
-              Maps high-risk intersections and dangerous road stretches based on historical accident and overspeeding incident clusters.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-3xl p-8 shadow-xl border border-black/5 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#F6F4F0] flex items-center justify-center">
-              <Sliders className="w-6 h-6 text-[#1C1917]" />
-            </div>
-            <h3 className="text-xl font-extrabold text-[#1C1917]">Hourly Traffic Density</h3>
-            <p className="text-xs text-[#57534E] leading-relaxed font-medium">
-              Tracks peak hour vehicle throughput and congestion spikes across 54+ municipal junction monitoring stations.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-3xl p-8 shadow-xl border border-black/5 space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#E0F2FE] flex items-center justify-center">
-              <FileText className="w-6 h-6 text-[#0284C7]" />
-            </div>
-            <h3 className="text-xl font-extrabold text-[#1C1917]">Automated PDF Reports</h3>
-            <p className="text-xs text-[#57534E] leading-relaxed font-medium">
-              Generates executive PDF/CSV compliance summaries for court proceedings, municipal authorities, and traffic police chiefs.
-            </p>
           </div>
         </div>
       </section>

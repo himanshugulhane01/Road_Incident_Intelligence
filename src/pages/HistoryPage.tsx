@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { History, Search, Download, Clock, Filter } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { exportDataAsCSV, exportDataAsJSON } from '../utils/helpers';
+import { exportDataAsCSV } from '../utils/helpers';
 
 export const HistoryPage: React.FC = () => {
   const { detectionHistory, seekVideo, setCurrentRoute } = useApp();
@@ -49,15 +49,9 @@ export const HistoryPage: React.FC = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => exportDataAsCSV(detectionHistory.map(d => ({ DetectionID: d.id, Time: d.timeFormatted, Type: d.type, Label: d.label, Confidence: `${d.confidence}%`, Camera: d.cameraId, Severity: d.severity, Plate: d.numberPlate || 'N/A' })), 'RoadGuard_Detection_History')}
-            className="btn-ghost flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold"
-          >
-            <Download className="w-4 h-4" /> Export CSV
-          </button>
-          <button
-            onClick={() => exportDataAsJSON(detectionHistory, 'RoadGuard_Detection_History')}
             className="btn-primary flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-extrabold shadow-md"
           >
-            <Download className="w-4 h-4" /> Export JSON
+            <Download className="w-4 h-4 text-white" /> <span>Export CSV</span>
           </button>
         </div>
       </div>

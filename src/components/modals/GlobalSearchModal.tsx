@@ -70,7 +70,6 @@ export const GlobalSearchModal: React.FC = () => {
     { id: 'video-analysis', title: 'Deep Video Forensic Analyzer', desc: 'Frame stepping, velocity breakdown, keyframe inspection', icon: FileVideo },
     { id: 'cameras', title: 'Camera Network & Nodes Management', desc: 'CCTV node status, resolution telemetry, stream setup', icon: Camera },
     { id: 'history', title: 'Detection History & Event Audit Log', desc: 'Complete detection timeline and violation records', icon: History },
-    { id: 'analytics', title: 'Traffic Analytics & Reports', desc: 'Density charts, violation trends, export reports', icon: BarChart3 },
     { id: 'settings', title: 'System Settings & Parameters', desc: 'Neural confidence thresholds, alert preferences', icon: Settings2 },
   ];
 
@@ -139,22 +138,22 @@ export const GlobalSearchModal: React.FC = () => {
         if (e.target === e.currentTarget) setIsSearchOpen(false);
       }}
     >
-      <div className="bg-white border border-[#CBD5E1] rounded-2xl max-w-3xl w-full text-[#0F172A] shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+      <div className="bg-white border border-[#CBD5E1] rounded-3xl max-w-3xl w-full text-[#0F172A] shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-fadeIn">
         {/* Search Header Bar with Prominent Back Option */}
-        <div className="p-3.5 md:p-4 border-b border-[#CBD5E1] flex items-center gap-3 bg-[#F8FAFC]">
+        <div className="p-4 border-b border-[#CBD5E1] flex items-center gap-3 bg-[#F8FAFC]">
           {/* Prominent Back Button */}
           <button
             id="search-modal-back-btn"
             onClick={() => setIsSearchOpen(false)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0F172A] text-white hover:bg-[#1E293B] text-xs font-bold transition-all shrink-0 cursor-pointer shadow-xs"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-[#0F172A] text-white hover:bg-[#1E293B] text-xs font-bold transition-all shrink-0 cursor-pointer shadow-xs"
             title="Go back to previous screen (Esc)"
           >
             <ArrowLeft className="w-4 h-4 text-[#EA580C]" />
-            <span className="hidden sm:inline">Back</span>
+            <span>Back</span>
           </button>
 
           {/* Search Icon & Input */}
-          <div className="flex-1 flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white border border-[#CBD5E1] focus-within:border-[#0F172A] shadow-xs">
+          <div className="flex-1 flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white border border-[#CBD5E1] focus-within:border-[#EA580C] shadow-xs transition-all">
             <Search className="w-4 h-4 text-[#EA580C] shrink-0" />
             <input
               ref={inputRef}
@@ -167,18 +166,21 @@ export const GlobalSearchModal: React.FC = () => {
             {globalSearchQuery && (
               <button
                 onClick={() => setGlobalSearchQuery('')}
-                className="p-1 rounded-md hover:bg-[#F1F5F9] text-[#64748B] hover:text-[#0F172A]"
+                className="p-1 rounded-lg hover:bg-[#F1F5F9] text-[#64748B] hover:text-[#0F172A]"
                 title="Clear input"
               >
                 <X className="w-4 h-4" />
               </button>
             )}
+            <kbd className="px-2 py-0.5 rounded-lg bg-[#F1F5F9] text-[#64748B] text-[10px] font-mono-tech font-bold border border-[#CBD5E1] hidden md:inline shrink-0">
+              ESC
+            </kbd>
           </div>
 
-          {/* Close X / ESC Button */}
+          {/* Close X Button */}
           <button
             onClick={() => setIsSearchOpen(false)}
-            className="p-2 rounded-xl bg-[#F1F5F9] text-[#334155] border border-[#CBD5E1] hover:bg-[#E2E8F0] hover:text-[#0F172A] text-xs font-bold transition-all shrink-0 cursor-pointer"
+            className="p-2.5 rounded-2xl bg-[#F1F5F9] text-[#334155] border border-[#CBD5E1] hover:bg-[#E2E8F0] hover:text-[#0F172A] text-xs font-bold transition-all shrink-0 cursor-pointer"
             title="Close Search Modal"
           >
             <X className="w-4 h-4" />

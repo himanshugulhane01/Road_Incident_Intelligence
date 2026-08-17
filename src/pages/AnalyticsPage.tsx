@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactECharts from 'echarts-for-react';
 import {
   BarChart,
   Bar,
@@ -19,6 +20,8 @@ import {
   Camera,
   Activity,
   ShieldCheck,
+  Cpu,
+  GitBranch,
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -51,6 +54,115 @@ export const AnalyticsPage: React.FC = () => {
     { camera: 'CAM-03', location: 'Industrial Sector 5', count: 34 },
     { camera: 'CAM-04', location: 'Expressway Toll Junction', count: 56 },
   ];
+
+  // Apache ECharts Option: Overall Perception & Enforcement Process Flow Graph
+  const apacheProcessGraphOption = {
+    title: {
+      text: 'AI Neural Perception & Dispatch Pipeline',
+      subtext: 'Apache ECharts Interactive Process Flow Graph',
+      left: 'center',
+      textStyle: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#0F172A',
+        fontFamily: 'Plus Jakarta Sans',
+      },
+      subtextStyle: {
+        fontSize: 11,
+        color: '#64748B',
+      },
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}: {c}',
+    },
+    animationDuration: 1500,
+    animationEasingUpdate: 'quinticInOut',
+    series: [
+      {
+        type: 'graph',
+        layout: 'force',
+        symbolSize: 60,
+        roam: true,
+        label: {
+          show: true,
+          position: 'inside',
+          fontSize: 10,
+          fontWeight: 'bold',
+          color: '#FFFFFF',
+        },
+        edgeSymbol: ['circle', 'arrow'],
+        edgeSymbolSize: [4, 10],
+        edgeLabel: {
+          fontSize: 9,
+        },
+        data: [
+          { name: 'RTSP Stream', value: '1080p 30FPS Feed', itemStyle: { color: '#0284C7' } },
+          { name: 'YOLO-v11 AI', value: 'Multi-Object Perception', itemStyle: { color: '#EA580C' } },
+          { name: 'CRNN OCR', value: 'ANPR Plate Reader', itemStyle: { color: '#16A34A' } },
+          { name: 'DeepSORT', value: 'Kalman Trajectory', itemStyle: { color: '#9333EA' } },
+          { name: 'Rules Engine', value: 'Infraction Check', itemStyle: { color: '#DC2626' } },
+          { name: 'e-Challan Portal', value: 'Push Dispatch', itemStyle: { color: '#059669' } },
+        ],
+        links: [
+          { source: 'RTSP Stream', target: 'YOLO-v11 AI' },
+          { source: 'YOLO-v11 AI', target: 'CRNN OCR' },
+          { source: 'YOLO-v11 AI', target: 'DeepSORT' },
+          { source: 'CRNN OCR', target: 'Rules Engine' },
+          { source: 'DeepSORT', target: 'Rules Engine' },
+          { source: 'Rules Engine', target: 'e-Challan Portal' },
+        ],
+        lineStyle: {
+          color: '#94A3B8',
+          width: 2,
+          curveness: 0.1,
+        },
+        force: {
+          repulsion: 350,
+          edgeLength: 130,
+        },
+      },
+    ],
+  };
+
+  // Apache ECharts Option: Overall Process Multi-Metric Radar
+  const apacheRadarOption = {
+    title: {
+      text: 'Overall Process System Radar',
+      left: 'center',
+      textStyle: { fontSize: 13, fontWeight: 'bold', color: '#0F172A' },
+    },
+    tooltip: { trigger: 'item' },
+    radar: {
+      indicator: [
+        { name: 'Detection Speed', max: 100 },
+        { name: 'OCR Accuracy', max: 100 },
+        { name: 'Stream Uptime', max: 100 },
+        { name: 'Rule Verification', max: 100 },
+        { name: 'Alert Dispatch', max: 100 },
+      ],
+      shape: 'polygon',
+      splitNumber: 4,
+      axisName: { color: '#64748B', fontSize: 10, fontWeight: 700 },
+      splitLine: { lineStyle: { color: '#E2E8F0' } },
+      splitArea: { areaStyle: { color: ['#F8FAFC', '#FFFFFF'] } },
+    },
+    series: [
+      {
+        name: 'Process Performance',
+        type: 'radar',
+        data: [
+          {
+            value: [94, 98, 99, 92, 96],
+            name: 'Current Operational Index',
+            areaStyle: { color: 'rgba(234, 88, 12, 0.25)' },
+            lineStyle: { color: '#EA580C', width: 2 },
+            itemStyle: { color: '#EA580C' },
+          },
+        ],
+      },
+    ],
+  };
 
   return (
     <div className="space-y-6 select-none">
@@ -120,6 +232,28 @@ export const AnalyticsPage: React.FC = () => {
           </div>
           <div className="text-2xl font-black text-[#0284C7]">98.4%</div>
           <div className="text-xs text-[#78716C] font-semibold">Across {stats.numberPlatesDetected || 128} plate reads</div>
+        </div>
+      </div>
+
+      {/* Apache ECharts Overall Process Flow Section */}
+      <div className="bg-white rounded-3xl p-6 shadow-xl border border-black/5 space-y-4">
+        <div className="flex items-center justify-between border-b border-[#E6E3DD] pb-3">
+          <div className="flex items-center gap-2">
+            <GitBranch className="w-4 h-4 text-[#EA580C]" />
+            <h3 className="text-xs font-extrabold text-[#1C1917] uppercase tracking-wider">
+              Apache ECharts — End-to-End Perception & Enforcement Process Flow Graph
+            </h3>
+          </div>
+          <span className="badge-ok font-bold">APACHE ECHARTS ACTIVE</span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <div className="lg:col-span-8 h-80 w-full bg-[#F8FAFC] rounded-2xl p-2 border border-[#CBD5E1]">
+            <ReactECharts option={apacheProcessGraphOption} style={{ height: '100%', width: '100%' }} />
+          </div>
+          <div className="lg:col-span-4 h-80 w-full bg-[#F8FAFC] rounded-2xl p-2 border border-[#CBD5E1]">
+            <ReactECharts option={apacheRadarOption} style={{ height: '100%', width: '100%' }} />
+          </div>
         </div>
       </div>
 
